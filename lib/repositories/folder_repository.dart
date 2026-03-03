@@ -5,23 +5,17 @@ import '../models/folder.dart';
 class FolderRepository {
   final DatabaseHelper _dbHelper = DatabaseHelper.instance;
 
-  // CREATE - Insert a new folder
   Future<int> insertFolder(Folder folder) async {
     final db = await _dbHelper.database;
     return await db.insert('folders', folder.toMap());
   }
 
-  // READ - Get all folders
   Future<List<Folder>> getAllFolders() async {
     final db = await _dbHelper.database;
     final List<Map<String, dynamic>> maps = await db.query('folders');
-    
-    return List.generate(maps.length, (i) {
-      return Folder.fromMap(maps[i]);
-    });
+    return List.generate(maps.length, (i) => Folder.fromMap(maps[i]));
   }
 
-  // READ - Get a single folder by ID
   Future<Folder?> getFolderById(int id) async {
     final db = await _dbHelper.database;
     final List<Map<String, dynamic>> maps = await db.query(
@@ -29,12 +23,10 @@ class FolderRepository {
       where: 'id = ?',
       whereArgs: [id],
     );
-    
     if (maps.isEmpty) return null;
     return Folder.fromMap(maps.first);
   }
 
-  // UPDATE - Update an existing folder
   Future<int> updateFolder(Folder folder) async {
     final db = await _dbHelper.database;
     return await db.update(
@@ -45,10 +37,8 @@ class FolderRepository {
     );
   }
 
-  // DELETE - Delete a folder and all associated cards
   Future<int> deleteFolder(int id) async {
     final db = await _dbHelper.database;
-    // Due to ON DELETE CASCADE, this will also delete all cards
     return await db.delete(
       'folders',
       where: 'id = ?',
@@ -56,7 +46,6 @@ class FolderRepository {
     );
   }
 
-  // Get folder count
   Future<int> getFolderCount() async {
     final db = await _dbHelper.database;
     final result = await db.rawQuery('SELECT COUNT(*) as count FROM folders');
