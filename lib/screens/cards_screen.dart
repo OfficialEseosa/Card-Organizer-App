@@ -117,7 +117,7 @@ class _CardsScreenState extends State<CardsScreen> {
                             child: ClipRRect(
                               borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
                               child: Image.network(
-                                card.imageUrl ?? CardApi.getCardImageUrl(card.cardName, card.suit),
+                                CardApi.getCardImageUrl(card.cardName, card.suit),
                                 fit: BoxFit.contain,
                                 errorBuilder: (context, error, stackTrace) {
                                   return const Center(child: Icon(Icons.broken_image, size: 40));
